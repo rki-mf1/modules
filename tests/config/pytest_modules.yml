@@ -3708,6 +3708,10 @@ subworkflows/fastq_align_star:
   - subworkflows/nf-core/fastq_align_star/**
   - tests/subworkflows/nf-core/fastq_align_star/**
 
+subworkflows/fastq_chopper_kraken2_krona_nanocomp:
+  - subworkflows/nf-core/fastq_chopper_kraken2_krona_nanocomp/**
+  - tests/subworkflows/nf-core/fastq_chopper_kraken2_krona_nanocomp/**
+
 subworkflows/fastq_contam_seqtk_kraken:
   - subworkflows/nf-core/fastq_contam_seqtk_kraken/**
   - tests/subworkflows/nf-core/fastq_contam_seqtk_kraken/**

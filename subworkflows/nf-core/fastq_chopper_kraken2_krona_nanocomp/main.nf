@@ -13,7 +13,9 @@ workflow  {
     take:
     ch_reads              // channel: [ val(meta), path(reads)  ]
     ch_krakendb           // channel: [ path(krakendb)  ]
-    ch_taxonomy           // channel: [ path(taxonomx)  ]
+    path taxonomy, stageAs: 'taxonomy.tab' 
+    or
+    ch_taxonomy           // channel: [ path(taxonomy)  ]
     val_skip_kraken2      // value: boolean
 
     main:
@@ -51,7 +53,8 @@ workflow  {
         // add kraken reports to emit later
         ch_kraken_rep = KRAKEN2_KRAKEN2.out.
         KRONA_KTIMPORTTAXONOMY(
-            ch_kraken_rep
+            ch_kraken_rep,
+            ch_taxonomy
         )
         //TODO krona output
         ch_krona_plot = KRONA_KTIMPORTTAXONOMY.out.

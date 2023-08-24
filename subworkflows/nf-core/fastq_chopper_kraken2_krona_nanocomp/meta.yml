@@ -1,16 +1,18 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: ""
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+name: "fastq_chopper_kraken2_krona_nanocomp"
+description: ONT read QC, trimming, and optional taxonomic classification
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules used in the subworkflow
+  - qc
+  - quality_control
+  - trimming
+  - fastq
+  - taxonomic_classification
 modules:
-  - samtools/sort
-  - samtools/index
+  - chopper
+  - nanocomp
+  - kraken2
+  - krona/ktupdatetaxonomy
+  - krona/ktimporttaxonomy
 ## TODO nf-core: List all of the variables used as input, including their types and descriptions
 input:
   - meta:
@@ -18,10 +20,16 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test' ]`
-  - bam:
+  - ch_reads:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: |
+        Structure: [ val(meta), path (reads) ]
+        Groovy Map containing sample information
+  - val_skip_kraken2:
+      type: boolean
+      description: |
+        Structure: val(skip_kraken2)
+        skip the kraken and krona processes if true
 ## TODO nf-core: List all of the variables used as output, including their types and descriptions
 output:
   - meta:

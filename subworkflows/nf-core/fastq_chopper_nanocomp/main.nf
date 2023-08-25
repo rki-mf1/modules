@@ -20,18 +20,21 @@ workflow KRAKEN2_KRONA {
     // classify samples
     KRAKEN2_KRAKEN2( ch_reads, ch_krakendb, save_output_fastqs, save_reads_assignment )
     ch_kraken_report = KRAKEN2_KRAKEN2.out.report
+    ch_kraken_report.view { "$it" }
 
     // prepare kraken reports for krona consumption
-    ch_krona_table = KRAKENTOOLS_KREPORT2KRONA( KRAKEN2_KRAKEN2.out.report ).out.txt
-    KRONA_KTIMPORTTEXT( ch_krona_table )
+    KRAKENTOOLS_KREPORT2KRONA( ch_kraken_report )
+    ch_krona_table = KRAKENTOOLS_KREPORT2KRONA.out.txt
+    ch_krona_table.view { "$it" }
 
-    // add krona output
+    KRONA_KTIMPORTTEXT( ch_krona_table )
     ch_krona_plot = KRONA_KTIMPORTTEXT.out.html
+    ch_krona_plot.view { "$it" }
 
     // log versions
-    ch_versions = ch_versions.mix( KRAKEN2_KRAKEN2.out.versions.first()           )
-    ch_versions = ch_versions.mix( KRAKENTOOLS_KREPORT2KRONA.out.versions.first() )
-    ch_versions = ch_versions.mix( KRONA_KTIMPORTTEXT.out.versions.first()        )
+    ch_versions = ch_versions.mix( KRAKEN2_KRAKEN2.out.versions           )
+    ch_versions = ch_versions.mix( KRAKENTOOLS_KREPORT2KRONA.out.versions )
+    ch_versions = ch_versions.mix( KRONA_KTIMPORTTEXT.out.versions        )
 
     emit:
     kraken_report = ch_kraken_report  // channel: [ val(meta), [ report ] ]

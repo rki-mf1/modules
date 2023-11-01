@@ -1,0 +1,58 @@
+- name: fastq_kraken2_krona test_fastq_kraken2_krona_singleend_illumina
+  command: nextflow run ./tests/subworkflows/nf-core/fastq_kraken2_krona -entry test_fastq_kraken2_krona_singleend_illumina -c ./tests/config/nextflow.config
+  tags:
+    - kraken2
+    - kraken2/kraken2
+    - krakentools
+    - krakentools/kreport2krona
+    - krona
+    - krona/ktimporttext
+    - subworkflows
+    - subworkflows/fastq_kraken2_krona
+  files:
+    - path: output/kraken2/test.kraken2.report.txt
+      md5sum: 4227755fe40478b8d7dc8634b489761e
+    - path: output/krakentools/test.txt
+      md5sum: c89a9db7acbdba9dea0fe246bcaa85c1
+    - path: output/krona/test.html
+      contains:
+        - '<node name="s__Severe_acute_respiratory_syndrome-related_coronavirus">'
+
+- name: fastq_kraken2_krona test_fastq_kraken2_krona_pairedend_illumina
+  command: nextflow run ./tests/subworkflows/nf-core/fastq_kraken2_krona -entry test_fastq_kraken2_krona_pairedend_illumina -c ./tests/config/nextflow.config
+  tags:
+    - kraken2
+    - kraken2/kraken2
+    - krakentools
+    - krakentools/kreport2krona
+    - krona
+    - krona/ktimporttext
+    - subworkflows
+    - subworkflows/fastq_kraken2_krona
+  files:
+    - path: output/kraken2/test.kraken2.report.txt
+      md5sum: 4227755fe40478b8d7dc8634b489761e
+    - path: output/krakentools/test.txt
+      md5sum: c89a9db7acbdba9dea0fe246bcaa85c1
+    - path: output/krona/test.html
+      contains:
+        - '<node name="s__Severe_acute_respiratory_syndrome-related_coronavirus">'
+
+- name: fastq_kraken2_krona test_fastq_kraken2_krona_ont
+  command: nextflow run ./tests/subworkflows/nf-core/fastq_kraken2_krona -entry test_fastq_kraken2_krona_ont -c ./tests/config/nextflow.config
+  tags:
+    - kraken2
+    - kraken2/kraken2
+    - krakentools
+    - krakentools/kreport2krona
+    - krona
+    - krona/ktimporttext
+    - subworkflows
+    - subworkflows/fastq_kraken2_krona
+  files:
+    - path: output/kraken2/test_.kraken2.report.txt
+      md5sum: af1a51fe57eb6d428350ff4a4bf759d4
+    - path: output/krakentools/test_.txt
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/krona/test_.html
+      md5sum: 8dfc38d05d9f725d2c287b6ac429cd59

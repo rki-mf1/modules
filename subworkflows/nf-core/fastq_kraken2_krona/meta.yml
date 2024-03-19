@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_kraken2_krona"
+description: Taxonomic classification of reads and subsequent visualisation of results
+keywords:
+  - fastq
+  - taxonomic_classification
+  - classify
+  - taxonomy
+  - metagenomics
+  - krona
+  - db
+  - plot
+  - interactive
+  - html
+  - visualisation
+  - krona chart
+modules:
+  - kraken2
+  - krakentools/kreport2krona
+  - krona/ktimporttext
+input:
+  - ch_reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively. With attached Groovy Map containing sample information.
+        Structure: [ val(meta), path (reads) ]
+  - ch_krakendb:
+      type: directory
+      description: Kraken2 database
+  - save_output_fastqs:
+      type: string
+      description: |
+        If true, optional commands are added to save classified and unclassified reads
+        as fastq files
+  - save_reads_assignment:
+      type: string
+      description: |
+        If true, an optional command is added to save a file reporting the taxonomic
+        classification of each input read
+output:
+  - kraken_report:
+      type: file
+      description: |
+        Kraken2 report containing stats about classified
+        and not classified reads.
+      pattern: "*.{report.txt}"
+  - krona_table:
+      type: file
+      description: Krona text-based input file converted from Kraken report
+      pattern: "*.{txt,krona}"
+  - krona_plot:
+      type: file
+      description: A html file containing an interactive krona plot.
+      pattern: "*.{html}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@ktrappe"
+  - "@FynnFreyer"
+  - "@paulwolk"

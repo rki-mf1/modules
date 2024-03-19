@@ -1,0 +1,64 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core subworkflows test fastq_kraken2_krona
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_KRAKEN2_KRONA"
+    script "../main.nf"
+    workflow "FASTQ_KRAKEN2_KRONA"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_kraken2_krona"
+
+    tag "untar"
+    tag "kraken2"
+    tag "kraken2/kraken2"
+    tag "krakentools"
+    tag "krona"
+
+    setup {
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [],
+                    file(
+                        params.test_data['sarscov2']['genome']['kraken2_tar_gz'],
+                        checkIfExists: true
+                    )
+                ])
+                """
+            }
+        }
+    }
+
+    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
+    test("sarscov2 - nanopore - single end - fastq") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    [ file(
+                        params.test_data['sarscov2']['nanopore']['test_fastq_gz'],
+                        checkIfExists: true
+                    )]
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = true
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+                //TODO nf-core: Add all required assertions to verify the test output.
+            )
+        }
+    }
+}

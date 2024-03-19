@@ -1,0 +1,2 @@
+subworkflows/fastq_kraken2_krona:
+  - subworkflows/nf-core/fastq_kraken2_krona/**

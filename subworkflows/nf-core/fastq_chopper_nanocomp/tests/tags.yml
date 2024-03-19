@@ -1,0 +1,2 @@
+subworkflows/fastq_chopper_nanocomp:
+  - subworkflows/nf-core/fastq_chopper_nanocomp/**

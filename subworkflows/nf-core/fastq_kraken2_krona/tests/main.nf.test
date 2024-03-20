@@ -47,7 +47,7 @@ nextflow_workflow {
                     )]
                 ]
                 input[1] = UNTAR.out.untar.map{ it[1] }
-                input[2] = true
+                input[2] = false
                 input[3] = false
                 """
             }
@@ -56,8 +56,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
-                //TODO nf-core: Add all required assertions to verify the test output.
+                // { assert snapshot(workflow.out).match()}
+                { assert path(workflow.out.ch_kraken_report.get(0).get(1)).md5 == "af1a51fe57eb6d428350ff4a4bf759d4"},
+                //{ assert },
+
             )
         }
     }

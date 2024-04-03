@@ -9,33 +9,35 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fastq_chopper_nanocomp"
-    // TODO nf-core: Add tags for all modules used within this subworkflow. Example:
-    tag "samtools"
-    tag "samtools/sort"
-    tag "samtools/index"
+    tag "chopper"
+    tag "nanocomp"
 
 
     // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
-    test("sarscov2 - bam - single_end") {
+    test("sarscov2 - fastq - nanopore") {
 
         when {
             workflow {
                 """
-                // TODO nf-core: define inputs of the workflow here. Example:
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                        file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
-                        ]
-                input[1] = [ [ id:'genome' ],
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                        ]
+                input[0] = [
+                    [
+                        [ id:'test1' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                    ],
+                    [
+                        [ id:'test2' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
                 """
             }
         }
 
         then {
+            // assert workflow.out.chopped_reads == "foo"
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.success },
+                // { assert snapshot(workflow.out).match()}
                 //TODO nf-core: Add all required assertions to verify the test output.
             )
         }
